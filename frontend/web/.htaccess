@@ -1,0 +1,12 @@
+Options +FollowSymLinks
+IndexIgnore */*
+RewriteEngine on
+
+# if a directory or a file exists, use it directly
+#  如果访问的文件不存在    !-f  代表  不存在
+RewriteCond %{REQUEST_FILENAME} !-f
+#  !-d 不是目录或不存在
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# otherwise forward it to index.php
+RewriteRule . index.php
