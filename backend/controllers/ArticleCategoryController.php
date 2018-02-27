@@ -47,18 +47,10 @@ class ArticleCategoryController extends \yii\web\Controller
     }
     // 删除
     public function actionDelete($id){
-        $request = \Yii::$app->request;
+
         $model = ArticleCategory::findOne(['id'=>$id]);
-        if($model->validate()){
-            if($model->is_deleted == 0){
-                \Yii::$app->session->setFlash('success', '正常状态下不能删除,防止误删');
-                return $this->redirect(['article-category/index']);die;
-            }else{
-                $model->delete();
-                \Yii::$app->session->setFlash('success', '删除成功');
-                return $this->redirect(['article-category/index']);
-            }
-        }
-        return $this->render('add', ['model' => $model]);
+        $model->is_deleted=1;
+        $model->save();
+        return $this->redirect(['article-category/index']);
     }
 }
