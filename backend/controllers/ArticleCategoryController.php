@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use app\models\ArticleCategory;
+use backend\models\ArticleCategory;
 
 class ArticleCategoryController extends \yii\web\Controller
 {
     // 文章列表
     public function actionIndex()
     {
-        $article = ArticleCategory::find()->all();
+        $article = ArticleCategory::find()->where(['is_deleted'=>0])->all();
         return $this->render('index',['articles'=>$article]);
     }
     // 添加文章

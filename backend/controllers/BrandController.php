@@ -2,15 +2,16 @@
 
 namespace backend\controllers;
 
-use app\models\Brand;
+use backend\models\Brand;
 use yii\web\UploadedFile;
 
 class BrandController extends \yii\web\Controller
 {
+    public $enableCsrfValidation = false;
     // 品牌列表
     public function actionIndex()
     {
-        $brand = Brand::find()->all();
+        $brand = Brand::find()->where(['is_deleted'=>0])->all();
         return $this->render('index',['brands'=>$brand]);
     }
     // 添加品牌
@@ -20,16 +21,8 @@ class BrandController extends \yii\web\Controller
         if($request->isPost){
 //            var_dump($_POST);die;
             $model->load($request->post());
-            $model->imgFile = UploadedFile::getInstance($model,'imgFile');
             $model->is_deleted = 0;
             if($model->validate()){
-
-                if($model->imgFile){
-                    $file = '/upload/brand/'.uniqid().$model->imgFile->extension;
-                    if($model->imgFile->saveAs(\Yii::getAlias('@webroot').$file,0)){
-                        $model->logo = $file;
-                    }
-                }
                 $model->save();
                 \Yii::$app->session->setFlash('success', '添加成功');
                 return $this->redirect(['brand/index']);
@@ -44,14 +37,7 @@ class BrandController extends \yii\web\Controller
         $model = Brand::findOne(['id'=>$id]);
         if($request->isPost) {
             $model->load($request->post());
-            $model->imgFile = UploadedFile::getInstance($model, 'imgFile');
             if ($model->validate()) {
-                if ($model->imgFile) {
-                    $file = '/upload/brand/' . uniqid() . $model->imgFile->extension;
-                    if ($model->imgFile->saveAs(\Yii::getAlias('@webroot') . $file, 0)) {
-                        $model->logo = $file;
-                    }
-                }
                 $model->save();
                 \Yii::$app->session->setFlash('success', '添加成功');
                 return $this->redirect(['brand/index']);
@@ -64,6 +50,18 @@ class BrandController extends \yii\web\Controller
         $model = Brand::findOne(['id'=>$id]);
         $model->is_deleted=1;
         $model->save();
-        return $this->redirect(['article-category/index']);
+        return $this->redirect(['brand/index']);
+    }
+    // 图片上传
+    public function actionLogoUpload(){
+        // 实例化上传文件类
+        $uploadFile = UploadedFile::getInstanceByName('file');
+        $fileName = '/upload/brand/'.uniqid().$uploadFile->extension;
+        $result = $uploadFile->saveAs(\Yii::getAlias('@webroot').$fileName);
+        if($result){
+            return json_encode([
+                'url'=>$fileName
+            ]);
+        }
     }
 }

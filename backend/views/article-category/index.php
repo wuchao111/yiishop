@@ -1,7 +1,7 @@
 <table class="table">
     <tr>
         <th>名称</th>
-        <th>简介</th>
+        <th>内容</th>
         <th>排序</th>
         <th>状态</th>
         <th>操作</th>
@@ -19,7 +19,7 @@
         </tr>
     <?php endforeach;?>
     <tr>
-        <td colspan="5">
+        <td colspan="7">
             <a href="<?=\yii\helpers\Url::to(['article-category/add'])?>" class="btn btn-success">添加</a>
         </td>
     </tr>
