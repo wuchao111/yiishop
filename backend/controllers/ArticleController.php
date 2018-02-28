@@ -24,7 +24,6 @@ class ArticleController extends \yii\web\Controller
                 $model->create_time = time();
                 $model->save();
                 $article_id = $model->attributes['id'];
-//                var_dump($article_id);exit;
                 $content->article_id = $article_id;
                 $content->save();
                 \Yii::$app->session->setFlash('success', '添加成功');
@@ -40,10 +39,8 @@ class ArticleController extends \yii\web\Controller
         if($request->isPost){
             $content->load($request->post());
             $model->load($request->post());
-
             if($model->validate()){
                 $article_id = $model->attributes['id'];
-//                var_dump($article_id);exit;
                 $content->article_id = $article_id;
                 $model->save();
                 $content->save();
