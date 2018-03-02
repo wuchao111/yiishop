@@ -13,7 +13,7 @@ class GoodsCategoryController extends \yii\web\Controller
         $query = GoodsCategory::find();
         $pager = new Pagination();
         $pager->totalCount = $query->count();
-        $pager->defaultPageSize = 3;
+        $pager->defaultPageSize = 5;
         $good = $query->offset($pager->offset)->limit($pager->limit)->all();
         return $this->render('index',['goods'=>$good,'pager'=>$pager]);
     }
@@ -54,7 +54,14 @@ class GoodsCategoryController extends \yii\web\Controller
                     $parent = GoodsCategory::findOne(['id'=>$model->parent_id]);
                     $model->prependTo($parent);
                 }else{
-                    $model->makeRoot();
+                    //顶级分类改顶级分类会报错
+                    //旧的parent_id为0时 改成新的parent_id为0
+                    if($model->getOldAttribute('parent_id == 0')){
+                        $model->save();
+                    }else{
+                        $model->makeRoot();
+                    }
+
                 }
                 \Yii::$app->session->setFlash('success', '修改成功');
                 return $this->redirect(['goods-category/index']);
@@ -66,9 +73,10 @@ class GoodsCategoryController extends \yii\web\Controller
     }
     public function actionDelete($id){
          $model = GoodsCategory::findOne(['id'=>$id]);
-            $model->deleteWithChildren();
-            \Yii::$app->session->setFlash('success', '删除成功');
-            return $this->redirect(['goods-category/index']);
+         // 删除根节点和下面的子孙节点
+         $model->deleteWithChildren();
+         \Yii::$app->session->setFlash('success', '删除成功');
+         return $this->redirect(['goods-category/index']);
     }
     // 测试
     public function actionTest(){
