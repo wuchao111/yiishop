@@ -4,13 +4,18 @@ namespace backend\controllers;
 
 use backend\models\Article;
 use backend\models\ArticleDetail;
+use yii\data\Pagination;
 
 class ArticleController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        $article = Article::find()->where(['is_deleted'=>0])->all();
-        return $this->render('index',['articles'=>$article]);
+        $query = Article::find()->where(['is_deleted' => 0]);
+        $pager = new Pagination();
+        $pager->totalCount = $query->count();
+        $pager->defaultPageSize = 3;
+        $article = $query->offset($pager->offset)->limit($pager->limit)->all();
+        return $this->render('index',['articles'=>$article,'pager'=>$pager]);
     }
     public function actionAdd(){
         $request = \Yii::$app->request;
@@ -19,7 +24,7 @@ class ArticleController extends \yii\web\Controller
         if($request->isPost){
             $model->load($request->post());
             $content->load($request->post());
-            if($model->validate()){
+            if($model->validate() && $content->validate()){
                 $model->is_deleted = 0;
                 $model->create_time = time();
                 $model->save();
@@ -39,9 +44,7 @@ class ArticleController extends \yii\web\Controller
         if($request->isPost){
             $content->load($request->post());
             $model->load($request->post());
-            if($model->validate()){
-                $article_id = $model->attributes['id'];
-                $content->article_id = $article_id;
+            if($model->validate() && $content->validate()){
                 $model->save();
                 $content->save();
                 \Yii::$app->session->setFlash('success', '修改成功');
@@ -66,7 +69,10 @@ class ArticleController extends \yii\web\Controller
         return [
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
+                'config' => [
+                    "imageUrlPrefix"  => "http://www.yiishop.com",//图片访问路径前缀
             ]
+                ]
         ];
     }
 }

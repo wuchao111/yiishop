@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Brand;
+use yii\data\Pagination;
 use yii\web\UploadedFile;
 // 引入鉴权类
 use Qiniu\Auth;
@@ -16,8 +17,12 @@ class BrandController extends \yii\web\Controller
     // 品牌列表
     public function actionIndex()
     {
-        $brand = Brand::find()->where(['is_deleted' => 0])->all();
-        return $this->render('index', ['brands' => $brand]);
+        $query = Brand::find()->where(['is_deleted' => 0]);
+        $pager = new Pagination();
+        $pager->totalCount = $query->count();
+        $pager->defaultPageSize = 3;
+        $brand = $query->offset($pager->offset)->limit($pager->limit)->all();
+        return $this->render('index',['brands'=>$brand,'pager'=>$pager]);
     }
 
     // 添加品牌

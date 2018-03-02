@@ -3,14 +3,19 @@
 namespace backend\controllers;
 
 use backend\models\ArticleCategory;
+use yii\data\Pagination;
 
 class ArticleCategoryController extends \yii\web\Controller
 {
     // 文章列表
     public function actionIndex()
     {
-        $article = ArticleCategory::find()->where(['is_deleted'=>0])->all();
-        return $this->render('index',['articles'=>$article]);
+        $query = ArticleCategory::find()->where(['is_deleted' => 0]);
+        $pager = new Pagination();
+        $pager->totalCount = $query->count();
+        $pager->defaultPageSize = 3;
+        $article = $query->offset($pager->offset)->limit($pager->limit)->all();
+        return $this->render('index',['articles'=>$article,'pager'=>$pager]);
     }
     // 添加文章
     public function actionAdd()
