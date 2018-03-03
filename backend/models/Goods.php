@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 
 /**
@@ -23,6 +24,7 @@ use Yii;
  */
 class Goods extends \yii\db\ActiveRecord
 {
+    public $imgFile;
     /**
      * @inheritdoc
      */
@@ -37,11 +39,12 @@ class Goods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'logo', 'goods_category_id', 'brand_id', 'market_price', 'shop_price', 'stock', 'is_on_sale', 'status', 'create_time'], 'required'],
-            [['goods_category_id', 'brand_id', 'stock', 'is_on_sale', 'status', 'create_time', 'sort', 'view_times'], 'integer'],
+            [['name', 'sn', 'goods_category_id', 'brand_id', 'market_price', 'shop_price', 'stock', 'is_on_sale', 'status', 'create_time'], 'required'],
+            [['goods_category_id', 'brand_id', 'stock', 'is_on_sale', 'status', 'create_time', 'sort'], 'integer'],
             [['market_price', 'shop_price'], 'number'],
             [['name'], 'string', 'max' => 20],
             [['logo'], 'string', 'max' => 255],
+            ['imgFile','file','extensions' =>['png','jpg','gif']],
         ];
     }
 
@@ -52,9 +55,10 @@ class Goods extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => '货号',
+            'name' => '名称',
+            'sn'=>'货号',
             'logo' => '图片',
-            'goods_category_id' => '商品分类id',
+            'goods_category_id' => '商品分类',
             'brand_id' => '品牌分类',
             'market_price' => '市场价格',
             'shop_price' => '商品价格',
@@ -65,5 +69,24 @@ class Goods extends \yii\db\ActiveRecord
             'sort' => '排序',
             'view_times' => '浏览次数',
         ];
+    }
+    //
+    public function getBrand(){
+        return $this->hasOne(Brand::className(),['id'=>'brand_id']);
+    }
+    public function getGoods(){
+        return $this->hasOne(GoodsCategory::className(),['id'=>'goods_category_id']);
+    }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    public static function find()
+    {
+        return new GoodsQuery(get_called_class());
     }
 }
