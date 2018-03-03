@@ -53,6 +53,7 @@ JS
 echo '<div>
     <ul id="treeDemo" class="ztree"></ul>
 </div>';
+
 // ==================== ztree =====================
 // 简介
 echo $form->field($model,'intro')->textarea();

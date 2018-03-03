@@ -61,7 +61,6 @@ class GoodsCategoryController extends \yii\web\Controller
                     }else{
                         $model->makeRoot();
                     }
-
                 }
                 \Yii::$app->session->setFlash('success', '修改成功');
                 return $this->redirect(['goods-category/index']);
@@ -74,8 +73,16 @@ class GoodsCategoryController extends \yii\web\Controller
     public function actionDelete($id){
          $model = GoodsCategory::findOne(['id'=>$id]);
          // 删除根节点和下面的子孙节点
-         $model->deleteWithChildren();
-         \Yii::$app->session->setFlash('success', '删除成功');
+        // 子节点
+        if($model->parent_id){
+            \Yii::$app->session->setFlash('success', '删除成功');
+            $model->delete();
+            // 父节点
+        }else{
+            \Yii::$app->session->setFlash('success', '根节点不能删除');
+        }
+//         $model->deleteWithChildren();
+
          return $this->redirect(['goods-category/index']);
     }
     // 测试

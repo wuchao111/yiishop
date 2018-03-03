@@ -13,7 +13,7 @@ class ArticleCategoryController extends \yii\web\Controller
         $query = ArticleCategory::find()->where(['is_deleted' => 0]);
         $pager = new Pagination();
         $pager->totalCount = $query->count();
-        $pager->defaultPageSize = 3;
+        $pager->defaultPageSize = 5;
         $article = $query->offset($pager->offset)->limit($pager->limit)->all();
         return $this->render('index',['articles'=>$article,'pager'=>$pager]);
     }

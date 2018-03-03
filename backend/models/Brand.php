@@ -54,4 +54,20 @@ class Brand extends \yii\db\ActiveRecord
             'is_deleted' => '状态',
         ];
     }
+
+    public function getBrand(){
+        return $this->hasOne(GoodsCategory::className(),['id'=>'brand_id']);
+    }
+    public static function allBrand(){
+        $brand=self::find()->all();
+
+        $arr=[];
+        foreach ($brand as $v ){
+
+            $arr[$v->id]=$v->name;
+
+        }
+
+        return $arr;
+    }
 }

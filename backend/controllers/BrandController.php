@@ -20,7 +20,7 @@ class BrandController extends \yii\web\Controller
         $query = Brand::find()->where(['is_deleted' => 0]);
         $pager = new Pagination();
         $pager->totalCount = $query->count();
-        $pager->defaultPageSize = 3;
+        $pager->defaultPageSize = 5;
         $brand = $query->offset($pager->offset)->limit($pager->limit)->all();
         return $this->render('index',['brands'=>$brand,'pager'=>$pager]);
     }
