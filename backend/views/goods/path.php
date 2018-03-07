@@ -7,7 +7,7 @@ $form = \yii\bootstrap\ActiveForm::begin();
 // 图片
 echo $form->field($model,'path')->hiddenInput()->label(false);
 //                                                                                 默认值
-echo $form->field($model,'goods_id')->hiddenInput(['value'=>$id])->label(false);
+//echo $form->field($model,'goods_id')->textInput(['value'=>$id])->label(false);
 
 $this->registerCssFile('@web/webuploader/webuploader.css');
 

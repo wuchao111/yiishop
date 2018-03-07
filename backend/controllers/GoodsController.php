@@ -36,10 +36,10 @@ class GoodsController extends \yii\web\Controller
                 $actions[]="sn like '%{$get['sn']}%'";
             }
             if(!empty($get['moneys'])){
-                $actions[]="shop_price >= '{$get['moneys']}'";
+                $actions[]="shop_price <= '{$get['moneys']}'";
             }
             if(!empty($get['money'])){
-                $actions[]="shop_price <= '{$get['money']}'";
+                $actions[]="shop_price >= '{$get['money']}'";
             }
             $sql.=implode('and  ',$actions);
 
@@ -159,16 +159,16 @@ class GoodsController extends \yii\web\Controller
         $pager->defaultPageSize = 5; // 每页显示条数
         $good = $query->offset($pager->offset)->limit($pager->limit)->all();
         return $this->render('recycle',['goods'=>$good,'pager'=>$pager]);
-    }
+    }public function actionRecovery($id){
+    $model = Goods::findOne(['id'=>$id]);
+    $model->status = 0;
+    $model->is_on_sale = 0 ;
+    $model->save();
+    \Yii::$app->session->setFlash('success', '恢复成功');
+    return $this->redirect(['goods/index']);
+}
     // 恢复
-    public function actionRecovery($id){
-        $model = Goods::findOne(['id'=>$id]);
-        $model->status = 0;
-        $model->is_on_sale = 0 ;
-        $model->save();
-        \Yii::$app->session->setFlash('success', '恢复成功');
-        return $this->redirect(['goods/index']);
-    }
+
     // 上传图片
     public function actionLogoUpload()
     {
@@ -239,6 +239,7 @@ class GoodsController extends \yii\web\Controller
         $model=new GoodsGallery();
         if($request->isPost){
             $model->load($request->post());
+            $model->goods_id = $id;
             if($model->validate()){
                 // 如果上传图片为空
                 if($model->path == null){
