@@ -15,8 +15,12 @@
             <td><?=$brand->sort?></td>
             <td><?=$brand->is_deleted == 0 ? '正常' : '删除'?></td>
             <td>
+            <?php if (Yii::$app->user->can('brand/edit')):?>
                 <a href="<?=\yii\helpers\Url::to(['brand/edit','id'=>$brand->id])?>" class="btn btn-warning">修改</a>
+            <?php endif;?>
+            <?php if (Yii::$app->user->can('brand/edit')):?>
                 <a href="<?=\yii\helpers\Url::to(['brand/delete','id'=>$brand->id])?>" class="btn btn-danger">删除</a>
+            <?php endif;?>
             </td>
         </tr>
     <?php endforeach;?>

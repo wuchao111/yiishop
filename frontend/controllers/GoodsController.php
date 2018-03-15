@@ -10,6 +10,7 @@ use app\models\Ress;
 use backend\models\Goods;
 use frontend\models\Payment;
 use yii\db\Exception;
+use yii\helpers\Url;
 use yii\web\Cookie;
 
 class GoodsController extends \yii\web\Controller
@@ -253,7 +254,11 @@ class GoodsController extends \yii\web\Controller
         }
     }
     // 修改状态
-    public function actionStatus(){
-
+    public function actionStatus($id)
+    {
+        $status = Order::findOne(['id' => $id]);
+        $status->status = 4;
+        $status->save();
+        return $this->redirect(['goods/show-order']);
     }
 }

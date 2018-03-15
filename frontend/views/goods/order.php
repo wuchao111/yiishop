@@ -510,7 +510,7 @@
 
                     <td><?=$arr[$order->status] ?></td>
 
-                    <td ><a href="<?=\yii\helpers\Url::to(['goods/status'])?>">查看</a> | <a href="#" class="del">删除</a></td>
+                    <td ><a href="<?=\yii\helpers\Url::to(['goods/status','id'=>$order->id])?>" class="shou">收货</a> | <a href="#" class="del">删除</a></td>
                 </tr>
                 <?php endforeach;?>
                 </tbody>
@@ -626,6 +626,13 @@
                 alert('删除失败 ')
             }
         })
+    })
+    $('.shou').click(function () {
+        var order_id = $(this).closest('tr').attr('data-id');
+        $.get('/goods/status.html').{order_id:order_id},function (arr) {
+            console.log(555)
+
+        }
     })
 </script>
 </body>

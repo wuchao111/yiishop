@@ -11,8 +11,12 @@
             <td><?=$per->name?></td>
             <td><?=$per->description?></td>
             <td>
+                <?php if (Yii::$app->user->can('rbac/editper')):?>
                 <a href="<?=\yii\helpers\Url::to(['rbac/editper','name'=>$per->name])?>" class="btn btn-warning">修改</a>
+                <?php endif;?>
+                <?php if (Yii::$app->user->can('rbac/deleteper')):?>
                 <a href="<?=\yii\helpers\Url::to(['rbac/deleteper','name'=>$per->name])?>" class="btn btn-danger">删除</a>
+                <?php endif;?>
             </td>
         </tr>
     <?php endforeach;?>

@@ -12,8 +12,12 @@
             <td><?=$good->intro?></td>
 
             <td>
+                <?php if (Yii::$app->user->can('goods-category/edit')):?>
                 <a href="<?=\yii\helpers\Url::to(['goods-category/edit','id'=>$good->id])?>" class="btn btn-warning">修改</a>
+                <?php endif;?>
+                <?php if (Yii::$app->user->can('goods-category/delete')):?>
                 <a href="<?=\yii\helpers\Url::to(['goods-category/delete','id'=>$good->id])?>" class="btn btn-danger">删除</a>
+                <?php endif;?>
             </td>
         </tr>
     <?php endforeach;?>

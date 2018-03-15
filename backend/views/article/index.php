@@ -20,7 +20,9 @@
             <?php if (Yii::$app->user->can('article/edit')):?>
                 <a href="<?=\yii\helpers\Url::to(['article/edit','id'=>$article->id])?>" class="btn btn-warning">修改</a>
             <?php endif;?>
+                <?php if (Yii::$app->user->can('article/delete')):?>
                 <a href="#" class="btn btn-danger delete">删除</a>
+                <?php endif;?>
                 <a href="<?=\yii\helpers\Url::to(['article/show','id'=>$article->id])?>" class="btn btn-success">查看内容</a>
             </td>
         </tr>

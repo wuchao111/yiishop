@@ -42,15 +42,21 @@
                 <a href="<?=\yii\helpers\Url::to(['goods/path','id'=>$good->id])?>" class="btn btn-default">
                     <span class="glyphicon glyphicon-picture">相册</span>
                 </a>
+                <?php if (Yii::$app->user->can('goods/edit')):?>
                 <a href="<?=\yii\helpers\Url::to(['goods/edit','id'=>$good->id])?>" class="btn btn-warning">
                     <span class="glyphicon glyphicon-edit">修改</span>
                 </a>
+                <?php endif;?>
+                <?php if (Yii::$app->user->can('goods/delete')):?>
                 <a href="<?=\yii\helpers\Url::to(['goods/delete','id'=>$good->id])?>" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash">删除</span>
                 </a>
+                <?endif;?>
+
                 <a href="<?=\yii\helpers\Url::to(['goods/show','id'=>$good->id])?>" class="btn btn-success">
                     <span class="glyphicon glyphicon-film">详情</span>
                 </a>
+
             </td>
         </tr>
     <?php endforeach;?>
