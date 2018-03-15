@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\RbacFilter;
 use backend\models\GoodsCategory;
 use Codeception\Module\Yii2;
 use yii\data\Pagination;
@@ -106,5 +107,17 @@ class GoodsCategoryController extends \yii\web\Controller
         $nodes = GoodsCategory::find()->select(['id','parent_id','name'])->asArray()->all();
 //        var_dump($nodes);die;
         return $this->renderPartial('ztree',['nodes'=>$nodes]);
+    }
+    //过滤器
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::class,
+                //默认情况对所有操作生效
+                //排除不需要授权的操作
+                'except'=>['index']
+            ]
+        ];
     }
 }

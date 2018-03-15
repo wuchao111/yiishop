@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\RbacFilter;
 use backend\models\Brand;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
@@ -71,10 +72,6 @@ class BrandController extends \yii\web\Controller
     }
 
     // 图片上传
-
-
-//    }
-
     public function actionLogoUpload(){
         //var_dump($_FILES);
         //实例化上传文件类
@@ -119,5 +116,17 @@ class BrandController extends \yii\web\Controller
                 'url'=>"fail"
             ]);
         }
+    }
+    //过滤器
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::class,
+                //默认情况对所有操作生效
+                //排除不需要授权的操作
+                'except'=>['index']
+            ]
+        ];
     }
 }

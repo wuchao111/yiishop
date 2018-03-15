@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\RbacFilter;
 use backend\models\Admin;
 use backend\models\Edit;
 use backend\models\Login;
@@ -12,6 +13,7 @@ use yii\web\Cookie;
 
 class AdminController extends \yii\web\Controller
 {
+
     // 登录
     public function actionLogin(){
         // 登录表单
@@ -52,36 +54,23 @@ class AdminController extends \yii\web\Controller
         $admin = $query->offset($pager->offset)->limit($pager->limit)->all();
         return $this->render('index',['admins'=>$admin,'pager'=>$pager]);
     }
-    //配置过滤器
-    public function behaviors()
-    {
-        return [
-            'acf'=>[
-                'class'=>AccessControl::className(),
-                'only'=>['index'],
-                'rules'=>[
-                    [//允许登录用户访问index
-                        'allow'=>true,//是否允许
-                        'actions'=>['index'],//针对哪些操作
-                        'roles'=>['@'],//?未认证 @已认证
-
-                    ],
-                ]
-            ]
-        ];
-    }
     // 添加
     public function actionAdd(){
+        $authmanager = \Yii::$app->authManager;
         $request = \Yii::$app->request;
         $model = new Admin();
 //        var_dump($_POST);die;
         if($request->isPost){
             $model->load($request->post());
-
             if($model->validate()){
 
 //                var_dump($model->password_hash);die;
                 $model->save();
+                foreach ($model->role as $role){
+                    $r= $authmanager->getRole($role);
+                    $authmanager->assign($r,$model->id);
+                }
+
                 \Yii::$app->session->setFlash('success', '添加成功');
                 return $this->redirect(['admin/index']);
             }else{
@@ -90,7 +79,13 @@ class AdminController extends \yii\web\Controller
         }else{
 //            var_dump($model->getErrors());
         }
-        return $this->render('add', ['model' => $model]);
+
+        $permissions = $authmanager->getRoles();
+        $items = [];
+        foreach ($permissions as $permission) {
+            $items[$permission->name] = $permission->description;
+        }
+        return $this->render('add', ['model' => $model,'items' => $items]);
     }
     // 修改
     public function actionEdit($id){
@@ -109,12 +104,20 @@ class AdminController extends \yii\web\Controller
     }
     // 删除
     public function actionDelete($id){
+//        var_dump($id);exit;
         $model = Admin::findOne(['id'=>$id]);
-        $model->status = 1;
-        $model->save();
-//        var_dump($model);die;
-        \Yii::$app->session->setFlash('success', '删除成功');
-        return $this->redirect(['admin/index']);
+        $res = $model->delete();
+        if ($res){
+            return json_encode([
+                'status'=>1
+            ]);
+        }else{
+            return json_encode([
+                'status'=>0
+            ]);
+        }
+
+
     }
     // 回收站
     public function actionShow(){
@@ -162,5 +165,17 @@ class AdminController extends \yii\web\Controller
         }
         $model->username = $user->username;
         return $this->render('edits', ['model' => $model]);
+    }
+    //过滤器
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::class,
+                //默认情况对所有操作生效
+                //排除不需要授权的操作
+                'except'=>['login','logout','chpwd','captcha','index']
+            ]
+        ];
     }
 }

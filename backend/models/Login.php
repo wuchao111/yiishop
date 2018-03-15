@@ -40,7 +40,8 @@ class Login extends Model{
                     $admin->last_login_time = time();
                     // 最后登录IP
                     $admin->last_login_ip = ip2long(\Yii::$app->request->userIP);
-                    $admin->save();
+                    $admin->save(0);
+//                    var_dump($admin->getErrors());die;
                     //自动登录  保存时间
                     $duration = $this->memme?1*24*3600:0;
                     return \Yii::$app->user->login($admin,$duration);

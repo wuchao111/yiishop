@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\RbacFilter;
 use backend\models\Article;
 use backend\models\ArticleDetail;
 use yii\data\Pagination;
@@ -73,6 +74,18 @@ class ArticleController extends \yii\web\Controller
                     "imageUrlPrefix"  => "http://www.yiishop.com",//图片访问路径前缀
             ]
                 ]
+        ];
+    }
+    //过滤器
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::class,
+                //默认情况对所有操作生效
+                //排除不需要授权的操作
+                'except'=>['index','show']
+            ]
         ];
     }
 }

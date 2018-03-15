@@ -20,12 +20,6 @@
             </td>
         </tr>
     <?php endforeach;?>
-    <tr>
-        <td colspan="6">
-            <a href="<?=\yii\helpers\Url::to(['brand/add'])?>" class="btn btn-success">添加</a>
-        </td>
-    </tr>
-
 </table>
 
 <?php

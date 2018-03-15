@@ -18,12 +18,6 @@
             </td>
         </tr>
     <?php endforeach;?>
-    <tr>
-        <td colspan="7">
-            <a href="<?=\yii\helpers\Url::to(['article-category/add'])?>" class="btn btn-success">添加</a>
-        </td>
-    </tr>
-
 </table>
 
 <?php

@@ -11,12 +11,14 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+
+    'layout'=>false,
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'frontend\models\Member',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -40,9 +42,17 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'suffix'=>'.html',//SEO
             'rules' => [
             ],
         ],
+        'sms' => [
+            'class'=>'frontend\aliyun\SmsHandler',
+            'ak'=>'LTAI7stzECttLN7B',
+            'sk'=>'Kf3whkSCuipuvLrsIoqlwzYsmUCbYz',
+            'sign'=>'浮夕阁卢克团',
+            'template'=>'SMS_126970172'
+        ]
 
     ],
     'params' => $params,

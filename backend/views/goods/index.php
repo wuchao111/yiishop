@@ -56,7 +56,6 @@
     <?php endforeach;?>
     <tr>
         <td colspan="14">
-            <a href="<?=\yii\helpers\Url::to(['goods/add'])?>" class="btn btn-success">添加</a>
             <a href="<?=\yii\helpers\Url::to(['goods/recycle'])?>" class="btn btn-success">回收站</a>
         </td>
     </tr>

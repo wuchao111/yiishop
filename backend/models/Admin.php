@@ -23,10 +23,7 @@ use yii\web\IdentityInterface;
 class Admin extends \yii\db\ActiveRecord implements IdentityInterface
 
 {
-//    public $old_password;// 旧密码
-//    public $new_password;// 新密码
-//    public $news_password;// 确认密码
-    // 场景
+    public $role;
     /**
      * @inheritdoc
      */
@@ -48,7 +45,8 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
-            ['password','safe']
+            ['password','safe'],
+            ['role','safe']
 //            [['old_password','new_password','news_password'],'required'],
         ];
     }
@@ -73,6 +71,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             'updated_at' => '更新时间',
             'last_login_time' => '最后登录时间',
             'last_login_ip' => '最后登录ip',
+            'role'=>'角色'
         ];
     }
     // 保存之前要做的事
@@ -157,4 +156,6 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->auth_key == $authKey;
     }
+
+
 }

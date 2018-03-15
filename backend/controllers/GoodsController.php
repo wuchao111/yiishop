@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\RbacFilter;
 use backend\models\Goods;
 use backend\models\GoodsCategory;
 use backend\models\GoodsDayCount;
@@ -260,5 +261,17 @@ class GoodsController extends \yii\web\Controller
         $goods->delete();
         \Yii::$app->session->setFlash('success', '删除成功');
         return $this->redirect(['goods/path','id'=>$goods_id]);
+    }
+    //过滤器
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::class,
+                //默认情况对所有操作生效
+                //排除不需要授权的操作
+                'except'=>['index','recycle','path','show','upload']
+            ]
+        ];
     }
 }
