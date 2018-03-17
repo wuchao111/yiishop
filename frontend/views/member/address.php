@@ -26,8 +26,7 @@
             <ul>
                 <li><?=Yii::$app->user->identity->name?>，欢迎来到京西！[<a href="<?=\yii\helpers\Url::to(['member/logout'])?>">退出</a>]  </li>
                 <li class="line">|</li>
-                <li><a href="<?=\yii\helpers\Url::to(['goods/order'])?>">我的订单></a></li>
-                <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">">收货地址></a></li>
+                <li><a href="<?=\yii\helpers\Url::to(['member/index'])?>">首页</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 

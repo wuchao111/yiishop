@@ -21,8 +21,9 @@ class GoodsController extends \yii\web\Controller
     {
         if(\Yii::$app->user->isGuest){
             // 游客状态
-            $cookies = \Yii::$app->response->cookies;
+            $cookies = \Yii::$app->request->cookies;
             $value = $cookies->getValue('carts');
+
             if($value){
                 $cart = unserialize($value);
             }else{
@@ -72,13 +73,15 @@ class GoodsController extends \yii\web\Controller
     public function actionFlow(){
 
         if(\Yii::$app->user->isGuest){
-            $cookies = \Yii::$app->response->cookies;
+            $cookies = \Yii::$app->request->cookies;
             $cart = $cookies->getValue('carts');
+//            var_dump($cart);die;
             if($cart){
                 $goodes = unserialize($cart);
             }else{
                 $goodes = [];
             }
+//            var_dump($goodes);die;
             $cookie = new Cookie();
             $cookie->name = 'carts';
             $cookie->value = serialize($goodes);
@@ -92,7 +95,6 @@ class GoodsController extends \yii\web\Controller
                 $goodes[$cart->goods_id] = $cart->amount;
            }
         }
-
         return $this->render('flow1',['goodss'=>$goodes]);
     }
 
@@ -190,11 +192,14 @@ class GoodsController extends \yii\web\Controller
 
 
             // 第三方交易货
-            $order->trade_no = '000000'.$order->id;
+
+            $order->trade_no = '000000';
             // 时间
             $order->create_time = time();
             $transaction = \Yii::$app->db->beginTransaction();
             try{
+                $order->save();
+                $order->trade_no = '000000'.$order->id;
                 $order->save();
 //                var_dump($order->getErrors());die;
                 // 保存订单详情
@@ -210,7 +215,7 @@ class GoodsController extends \yii\web\Controller
                     //扣减商品库存
                     $goods->stock -= $cart->amount;
                     $goods->save();
-
+//                    var_dump($goods->getErrors());die;
                     $goods  = Goods::findOne(['id'=>$cart->goods_id]);
                     $orderGoods = new OrderGoods();
                     $orderGoods->order_id = $order->id;
@@ -220,16 +225,21 @@ class GoodsController extends \yii\web\Controller
                     $orderGoods->price = $goods->shop_price;
                     $orderGoods->amount = $cart->amount;
                     $orderGoods->total = $goods->shop_price * $cart->amount;
-                    $order->total+=$orderGoods->total;
+//                    $order->total += $orderGoods->total;
                     $orderGoods->save();
+//                    var_dump($orderGoods->getErrors());die;
+//
                 }
                 $order->save();
+//                var_dump($order->getErrors());die;
                 Cart::deleteAll(['member_id'=>\Yii::$app->user->id]);
                 //提交事务
                 $transaction->commit();
+
             }catch (Exception $e){
                 //事务回滚
                 $transaction->rollBack();
+                echo "提交失败";die;
             }
         }
         return $this->render('flow3');

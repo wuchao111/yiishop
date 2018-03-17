@@ -26,7 +26,7 @@
             <ul>
                 <li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="register.html">免费注册</a>] </li>
                 <li class="line">|</li>
-                <li>我的订单</li>
+                <li><a href="<?=\yii\helpers\Url::to(['member/index'])?>">首页</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 
@@ -626,13 +626,6 @@
                 alert('删除失败 ')
             }
         })
-    })
-    $('.shou').click(function () {
-        var order_id = $(this).closest('tr').attr('data-id');
-        $.get('/goods/status.html').{order_id:order_id},function (arr) {
-            console.log(555)
-
-        }
     })
 </script>
 </body>

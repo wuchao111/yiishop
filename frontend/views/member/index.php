@@ -27,7 +27,7 @@
                 <li>你好，欢迎来到京西！[<a href="<?=\yii\helpers\Url::to(['member/logout'])?>">退出</a>]  </li>
                 <li class="line">|</li>
 
-                <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">我的订单</a></li>
+                <li><a href="<?=\yii\helpers\Url::to(['member/index'])?>">首页</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 
@@ -82,7 +82,7 @@
                         <ul class="list1 fl">
                             <li><a href="">用户信息></a></li>
                             <li><a href="<?=\yii\helpers\Url::to(['goods/order'])?>">我的订单></a></li>
-                            <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">">收货地址></a></li>
+                            <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">收货地址></a></li>
                             <li><a href="">我的收藏></a></li>
                         </ul>
 
@@ -341,7 +341,7 @@
 
             <!-- 热卖商品 start -->
             <div class="hot none">
-                <?php $parent = \backend\models\Goods::find()->where(['>','id',10])->all()?>
+                <?php $parent = \backend\models\Goods::find()->where(['>','id',10])->andwhere(['<','id',15])->all()?>
                 <?php foreach ($parent as $child): ?>
                     <ul>
                         <li>
@@ -457,7 +457,7 @@
                 </div>
 
                 <div class="none">
-                    <?php $parent = \backend\models\Goods::find()->where(['>','id',10])->all()?>
+                    <?php $parent = \backend\models\Goods::find()->where(['>','id',10])->andwhere(['<','id',19])->all()?>
                     <?php foreach ($parent as $child): ?>
                     <ul>
                         <li>

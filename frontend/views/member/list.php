@@ -26,7 +26,7 @@
             <ul>
                 <li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="register.html">免费注册</a>] </li>
                 <li class="line">|</li>
-                <li>我的订单</li>
+                <li><a href="<?=\yii\helpers\Url::to(['member/index'])?>">首页</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 
@@ -81,7 +81,7 @@
                         <ul class="list1 fl">
                             <li><a href="">用户信息></a></li>
                             <li><a href="<?=\yii\helpers\Url::to(['goods/order'])?>">我的订单></a></li>
-                            <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">">收货地址></a></li>
+                            <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">收货地址></a></li>
                             <li><a href="">我的收藏></a></li>
                         </ul>
 
@@ -695,7 +695,6 @@
                         <dt><a href="<?=\yii\helpers\Url::to(['member/show','id'=>$goods->id])?>"><img src="<?=$goods->logo?>" alt="" /></a></dt>
                         <dd><a href=""><?=$goods->name?></a></dt>
                         <dd><strong>￥<?=$goods->shop_price?></strong></dt>
-                        <dd><a href=""><em>已有10人评价</em></a></dt>
                     </dl>
                 </li>
             </ul>

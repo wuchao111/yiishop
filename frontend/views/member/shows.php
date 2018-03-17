@@ -45,7 +45,7 @@
             <ul>
                 <li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="register.html">免费注册</a>] </li>
                 <li class="line">|</li>
-                <li>我的订单</li>
+                <li><a href="<?=\yii\helpers\Url::to(['member/index'])?>">首页</a></li>
                 <li class="line">|</li>
                 <li>客户服务</li>
 
@@ -100,7 +100,7 @@
                         <ul class="list1 fl">
                             <li><a href="">用户信息></a></li>
                             <li><a href="<?=\yii\helpers\Url::to(['goods/order'])?>">我的订单></a></li>
-                            <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">">收货地址></a></li>
+                            <li><a href="<?=\yii\helpers\Url::to(['ress/index'])?>">收货地址></a></li>
                             <li><a href="">我的收藏></a></li>
                         </ul>
 
@@ -593,7 +593,7 @@
                     <li class="market_price"><span>定价：</span><em>￥<?=$goods->market_price?></em></li>
                     <li class="shop_price"><span>本店价：</span> <strong>￥<?=$goods->shop_price?></strong> <a href="">(降价通知)</a></li>
                     <li><span>上架时间：</span><?=date('Y-m-d H:i:s',$goods->create_time)?></li>
-                    <li class="star"><span>商品评分：</span> <strong></strong><a href="">(已有21人评价)</a></li> <!-- 此处的星级切换css即可 默认为5星 star4 表示4星 star3 表示3星 star2表示2星 star1表示1星 -->
+                    <li><span>浏览次数:</span> <strong><?=$goods->view_times?>次</strong></li> <!-- 此处的星级切换css即可 默认为5星 star4 表示4星 star3 表示3星 star2表示2星 star1表示1星 -->
                 </ul>
                 <form action="<?=\yii\helpers\Url::to(['goods/add-cart'])?>" method="get" class="choose">
                     <ul>

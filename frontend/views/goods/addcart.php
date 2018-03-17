@@ -20,7 +20,8 @@
             <ul>
                 <li>您好，欢迎来到京西！[<a href="login.html">登录</a>] [<a href="register.html">免费注册</a>] </li>
                 <li class="line">|</li>
-                <li>我的订单</li>
+                <li><a href="<?=\yii\helpers\Url::to(['member/index'])?>">首页</a></li>
+
                 <li class="line">|</li>
                 <li>客户服务</li>
 

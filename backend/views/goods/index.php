@@ -51,8 +51,7 @@
                 <a href="<?=\yii\helpers\Url::to(['goods/delete','id'=>$good->id])?>" class="btn btn-danger">
                     <span class="glyphicon glyphicon-trash">删除</span>
                 </a>
-                <?endif;?>
-
+                <?php endif;?>
                 <a href="<?=\yii\helpers\Url::to(['goods/show','id'=>$good->id])?>" class="btn btn-success">
                     <span class="glyphicon glyphicon-film">详情</span>
                 </a>

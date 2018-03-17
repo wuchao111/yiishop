@@ -26,6 +26,8 @@ class MemberController extends \yii\web\Controller
 //        var_dump($good);die;
         $path = GoodsGallery::find()->where(['goods_id'=>$id])->all();
 //        var_dump($path);die;
+        $good->view_times +=1;
+        $good->save();
         return $this->render('shows',['goods'=>$good,'paths'=>$path]);
     }
     // 商品列表
@@ -42,8 +44,8 @@ class MemberController extends \yii\web\Controller
                 break;
         }
         $goods = Goods::find()->where(['in','goods_category_id',$ids])->all();
-
 //        var_dump($goods);die;
+//        $goods->
         return $this->render('list',['goodes'=>$goods]);
     }
     // 注册
